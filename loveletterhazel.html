@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Love Letter for Hazel</title>
+  
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Montserrat:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <style>
+    /* Premium CSS Custom Variables - Cute Pink Theme */
+    :root {
+      --primary: #ff4b6e;
+      --primary-glow: rgba(255, 75, 110, 0.3);
+      --primary-dark: #cc1f43;
+      --bg-dark: #ffd6dc;
+      --bg-card: rgba(255, 255, 255, 0.5); /* Beautiful white frosted glass */
+      --border-glow: rgba(255, 255, 255, 0.45); /* Clear glass border */
+      --text-main: #4a2830; /* Deep romantic rosewood for readability */
+      --text-muted: #7d5a63; /* Muted rose-tinted text */
+      --card-shadow: 0 16px 45px rgba(255, 75, 110, 0.15); /* Soft pink drop shadow */
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #fbc2cb;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary);
+    }
+
+    /* General Body Styles */
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top, rgba(255, 255, 255, 0.6), transparent 35%),
+        radial-gradient(circle at bottom, rgba(255, 182, 193, 0.4), transparent 40%),
+        linear-gradient(135deg, #fff0f2 0%, #ffd6dc 100%);
+      font-family: 'Montserrat', sans-serif;
+      color: var(--text-main);
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+
+    /* Grid Scanlines Effect */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 75, 110, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 75, 110, 0.02) 1px, transparent 1px);
+      background-size: 1.2rem 1.2rem;
+      opacity: 0.15;
+      z-index: 0;
+    }
+
+    /* Ambient Particle Canvas */
+    #ambientCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Music Player Widget */
+    .music-widget {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-card);
+      padding: 8px 16px 8px 8px;
+      border-radius: 40px;
+      border: 1px solid var(--border-glow);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    .music-widget:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 75, 110, 0.3);
+    }
+
+    .music-vinyl {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #2d3540 30%, #000 70%);
+      border: 2px solid #1c232e;
+      display: grid;
+      place-items: center;
+      position: relative;
+      animation: spin 3.5s linear infinite;
+      animation-play-state: paused;
+    }
+
+    .music-vinyl::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: var(--primary);
+      border-radius: 50%;
+      border: 2px solid #fff;
+    }
+
+    .music-vinyl.playing {
+      animation-play-state: running;
+      box-shadow: 0 0 15px var(--primary-glow);
+      border-color: var(--primary);
+    }
+
+    .music-info {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-main);
+    }
+
+    .music-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 12px;
+    }
+
+    .music-bar {
+      width: 2px;
+      height: 2px;
+      background: var(--primary);
+      border-radius: 1px;
+      transition: height 0.15s ease;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Central Glassmorphic Main Stage */
+    .stage {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .glass-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glow);
+      border-radius: 32px;
+      padding: 40px 60px;
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: min(94vw, 480px);
+      transition: all 0.5s ease;
+    }
+
+    .glass-panel h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 4.2rem;
+      color: var(--text-main);
+      margin: 0;
+      text-shadow: 0 0 20px rgba(255, 75, 110, 0.2);
+      background: linear-gradient(to right, #4a2830, #ff4b6e, #ff859c);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .glass-panel p {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      color: var(--text-muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      margin-top: 8px;
+      margin-bottom: 24px;
+    }
+
+    /* Elegant CSS 3D Envelope Wrapper */
+    .envelope-wrapper {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      margin-bottom: 10px;
+    }
+
+    /* 3D Envelope Container */
+    .envelope-container {
+      width: 220px;
+      height: 150px;
+      position: absolute;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      perspective: 800px;
+    }
+
+    .envelope-body {
+      width: 100%;
+      height: 100%;
+      background: #f43f5e;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 0 0 12px 12px;
+      position: absolute;
+      bottom: 0;
+      z-index: 2;
+      box-shadow: 0 8px 25px rgba(255, 75, 110, 0.15);
+    }
+
+    .envelope-flap {
+      width: 0;
+      height: 0;
+      border-left: 110px solid transparent;
+      border-right: 110px solid transparent;
+      border-top: 75px solid #e11d48;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: top;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 5;
+    }
+
+    .envelope-body::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: 110px solid transparent;
+      border-right: 110px solid transparent;
+      border-bottom: 75px solid rgba(244, 63, 94, 0.95);
+      bottom: 0;
+      left: 0;
+      border-radius: 0 0 12px 12px;
+    }
+
+    .envelope-wax-seal {
+      width: 36px;
+      height: 36px;
+      background: var(--primary);
+      border-radius: 50%;
+      position: absolute;
+      top: 57px;
+      left: 92px;
+      z-index: 6;
+      box-shadow: 0 0 12px var(--primary-glow);
+      display: grid;
+      place-items: center;
+      transition: all 0.4s ease;
+    }
+
+    .envelope-wax-seal svg {
+      width: 16px;
+      height: 16px;
+      fill: #fff;
+    }
+
+    .envelope-letter-card {
+      width: 200px;
+      height: 120px;
+      background: #fdfbf7;
+      position: absolute;
+      bottom: 5px;
+      left: 10px;
+      z-index: 1;
+      border-radius: 6px;
+      transform: translateY(0);
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Great Vibes', cursive;
+      color: #333;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    /* Envelope Opening State classes */
+    .envelope-container.open .envelope-flap {
+      transform: rotateX(180deg);
+      z-index: 0;
+    }
+
+    .envelope-container.open .envelope-letter-card {
+      transform: translateY(-80px);
+    }
+
+    .envelope-container.open .envelope-wax-seal {
+      transform: scale(0) translateY(10px);
+      opacity: 0;
+    }
+
+    /* Open Button */
+    .open-btn {
+      background: rgba(255, 75, 110, 0.15);
+      border: 1px solid var(--primary);
+      padding: 14px 44px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #fff;
+      border-radius: 30px;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 20px rgba(255, 75, 110, 0.2);
+    }
+
+    .open-btn:hover {
+      background: var(--primary);
+      box-shadow: 0 0 35px var(--primary-glow);
+      transform: translateY(-3px) scale(1.05);
+    }
+
+    /* ==========================================================
+       ANIMATED CSS CARTOON CAT (FLAT HIERARCHY FOR PERFECT Z-INDEXING)
+       ========================================================== */
+
+    /* Cat Body (Behind Envelope, z-index: 2) */
+    .cat-body {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 130px;
+      height: 100px;
+      background: #cbd5e1;
+      border-radius: 65px 65px 35px 35px;
+      border: 3px solid #475569;
+      z-index: 2;
+      animation: breathe 3s ease-in-out infinite alternate;
+      transform-origin: bottom center;
+    }
+
+    .cat-tail {
+      position: absolute;
+      bottom: 22px;
+      left: 175px;
+      width: 22px;
+      height: 75px;
+      background: #cbd5e1;
+      border: 3px solid #475569;
+      border-radius: 0 20px 20px 0;
+      transform-origin: bottom left;
+      animation: wiggle-tail 3s ease-in-out infinite alternate;
+      z-index: 1;
+    }
+
+    /* Cat Head (In Front of Envelope, z-index: 4) */
+    .cat-head {
+      position: absolute;
+      bottom: 95px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 124px;
+      height: 96px;
+      background: #cbd5e1;
+      border-radius: 62px 62px 50px 50px;
+      border: 3px solid #475569;
+      z-index: 4;
+      animation: breathe-head 3s ease-in-out infinite alternate;
+      transform-origin: bottom center;
+    }
+
+    .cat-head .ear {
+      position: absolute;
+      top: -12px;
+      width: 32px;
+      height: 42px;
+      background: #cbd5e1;
+      border: 3px solid #475569;
+      border-bottom: none;
+      border-radius: 8px 24px 0 0;
+      transform-origin: bottom center;
+    }
+
+    .cat-head .ear.left {
+      left: 10px;
+      transform: rotate(-15deg);
+      animation: twitch-left 4s ease-in-out infinite;
+    }
+
+    .cat-head .ear.right {
+      right: 10px;
+      transform: rotate(15deg) scaleX(-1);
+      animation: twitch-right 4.5s ease-in-out infinite;
+    }
+
+    .cat-head .ear::after {
+      content: '';
+      position: absolute;
+      top: 6px;
+      left: 5px;
+      width: 16px;
+      height: 28px;
+      background: #fda4af;
+      border-radius: 5px 16px 0 0;
+    }
+
+    .cat-head .eye {
+      position: absolute;
+      top: 36px;
+      width: 12px;
+      height: 12px;
+      background: #1e293b;
+      border-radius: 50%;
+      animation: blink 4s infinite;
+    }
+
+    .cat-head .eye.left {
+      left: 28px;
+    }
+
+    .cat-head .eye.right {
+      right: 28px;
+    }
+
+    .cat-head .eye::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 3.5px;
+      height: 3.5px;
+      background: #fff;
+      border-radius: 50%;
+    }
+
+    .cat-head .nose {
+      position: absolute;
+      top: 48px;
+      left: 58px;
+      width: 8px;
+      height: 5px;
+      background: #f43f5e;
+      border-radius: 50% 50% 50% 50% / 30% 30% 70% 70%;
+    }
+
+    .cat-head .mouth {
+      position: absolute;
+      top: 53px;
+      left: 55px;
+      width: 14px;
+      height: 7px;
+      border-bottom: 2px solid #475569;
+      border-radius: 0 0 7px 7px;
+    }
+
+    .cat-head .blush {
+      position: absolute;
+      top: 50px;
+      width: 14px;
+      height: 7px;
+      background: #fecdd3;
+      border-radius: 50%;
+      opacity: 0.85;
+    }
+
+    .cat-head .blush.left {
+      left: 14px;
+    }
+
+    .cat-head .blush.right {
+      right: 14px;
+    }
+
+    /* Cat Paws (In Front of Envelope, z-index: 6) */
+    .cat-paw {
+      position: absolute;
+      bottom: 12px;
+      width: 30px;
+      height: 22px;
+      background: #cbd5e1;
+      border: 3px solid #475569;
+      border-radius: 11px 11px 5px 5px;
+      z-index: 6;
+    }
+
+    .cat-paw.left {
+      left: 65px;
+    }
+
+    .cat-paw.right {
+      right: 65px;
+    }
+
+    /* Breathing & Wiggling animations */
+    @keyframes breathe {
+      0% { transform: translateX(-50%) scaleY(1); }
+      100% { transform: translateX(-50%) scaleY(1.04); }
+    }
+
+    @keyframes breathe-head {
+      0% { transform: translateX(-50%) scaleY(1); }
+      100% { transform: translateX(-50%) scaleY(1.02) translateY(1px); }
+    }
+
+    @keyframes blink {
+      0%, 90%, 100% { transform: scaleY(1); }
+      95% { transform: scaleY(0.1); }
+    }
+
+    @keyframes twitch-left {
+      0%, 88%, 94%, 100% { transform: rotate(-15deg); }
+      90%, 92% { transform: rotate(-25deg); }
+    }
+
+    @keyframes twitch-right {
+      0%, 90%, 96%, 100% { transform: rotate(15deg) scaleX(-1); }
+      92%, 94% { transform: rotate(25deg) scaleX(-1); }
+    }
+
+    @keyframes wiggle-tail {
+      0% { transform: rotate(-8deg); }
+      100% { transform: rotate(18deg); }
+    }
+
+
+    /* ==========================================================
+       POP-UP LETTER MODAL WITH CARTOON CAT PEEKING/HOLDING PAPER
+       ========================================================== */
+
+    .letter-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(255, 240, 243, 0.95);
+      backdrop-filter: blur(25px);
+      display: grid;
+      place-items: start center;
+      padding: 96px 24px 24px;
+      overflow-y: auto;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .letter-modal.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .letter-paper {
+      width: 100%;
+      max-width: 620px;
+      background: #fbf9f3;
+      background-image: radial-gradient(rgba(0,0,0,0.02) 1px, transparent 0);
+      background-size: 24px 24px;
+      border-radius: 24px;
+      padding: 56px 48px 48px 48px;
+      color: #2d2621;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6), inset 0 0 60px rgba(235, 225, 205, 0.35);
+      border: 1px solid #e6dec9;
+      transform: scale(0.9) translateY(40px);
+      transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100vh - 120px);
+      overflow: visible;
+    }
+
+    .letter-modal.active .letter-paper {
+      transform: scale(1) translateY(0);
+    }
+
+    .letter-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: #928373;
+      transition: color 0.3s ease;
+      z-index: 20;
+    }
+
+    .letter-close-btn:hover {
+      color: var(--primary);
+    }
+
+    .letter-scroll {
+      max-height: calc(100vh - 224px);
+      min-height: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding-right: 8px;
+      scrollbar-gutter: stable;
+    }
+
+    .letter-content {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.3rem;
+      line-height: 1.55;
+      text-align: left;
+      margin-bottom: 36px;
+      min-height: 200px;
+      color: #38302b;
+      overflow-wrap: break-word;
+    }
+
+    /* Peeking/Holding Cartoon Cat on Letter Paper */
+    .peeking-cat {
+      position: absolute;
+      top: -76px; /* Sits right on the top edge of the letter-paper */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 140px;
+      height: 80px;
+      z-index: 10;
+    }
+
+    .peeking-head {
+      width: 114px;
+      height: 80px;
+      background: #cbd5e1;
+      border-radius: 57px 57px 42px 42px;
+      border: 3px solid #475569;
+      position: absolute;
+      bottom: 0;
+      left: 13px;
+      animation: peeking-breathe 2.5s ease-in-out infinite alternate;
+      transform-origin: bottom center;
+    }
+
+    .peeking-ear {
+      position: absolute;
+      top: -10px;
+      width: 28px;
+      height: 38px;
+      background: #cbd5e1;
+      border: 3px solid #475569;
+      border-bottom: none;
+      border-radius: 8px 24px 0 0;
+      transform-origin: bottom center;
+    }
+
+    .peeking-ear.left {
+      left: 16px;
+      transform: rotate(-15deg);
+      animation: twitch-left 4s ease-in-out infinite;
+    }
+
+    .peeking-ear.right {
+      right: 16px;
+      transform: rotate(15deg) scaleX(-1);
+      animation: twitch-right 4.5s ease-in-out infinite;
+    }
+
+    .peeking-ear::after {
+      content: '';
+      position: absolute;
+      top: 6px;
+      left: 5px;
+      width: 14px;
+      height: 25px;
+      background: #fda4af;
+      border-radius: 4px 14px 0 0;
+    }
+
+    .peeking-eye {
+      position: absolute;
+      top: 30px;
+      width: 10px;
+      height: 10px;
+      background: #1e293b;
+      border-radius: 50%;
+      animation: blink 4s infinite;
+    }
+
+    .peeking-eye.left {
+      left: 24px;
+    }
+
+    .peeking-eye.right {
+      right: 24px;
+    }
+
+    .peeking-eye::after {
+      content: '';
+      position: absolute;
+      top: 1.5px;
+      left: 1.5px;
+      width: 3px;
+      height: 3px;
+      background: #fff;
+      border-radius: 50%;
+    }
+
+    .peeking-nose {
+      position: absolute;
+      top: 40px;
+      left: 53px;
+      width: 8px;
+      height: 5px;
+      background: #f43f5e;
+      border-radius: 50% 50% 50% 50% / 30% 30% 70% 70%;
+    }
+
+    .peeking-mouth {
+      position: absolute;
+      top: 45px;
+      left: 50px;
+      width: 14px;
+      height: 7px;
+      border-bottom: 2px solid #475569;
+      border-radius: 0 0 7px 7px;
+    }
+
+    .peeking-blush {
+      position: absolute;
+      top: 41px;
+      width: 14px;
+      height: 6px;
+      background: #fecdd3;
+      border-radius: 50%;
+      opacity: 0.85;
+    }
+
+    .peeking-blush.left {
+      left: 12px;
+    }
+
+    .peeking-blush.right {
+      right: 12px;
+    }
+
+    /* Paws holding the paper (Overlapping paper sheet top boundary) */
+    .peeking-paw {
+      position: absolute;
+      bottom: -6px;
+      width: 26px;
+      height: 20px;
+      background: #cbd5e1;
+      border: 3px solid #475569;
+      border-radius: 10px 10px 4px 4px;
+      z-index: 21; /* Paws sit higher than the paper border */
+    }
+
+    .peeking-paw.left {
+      left: 24px;
+    }
+
+    .peeking-paw.right {
+      right: 24px;
+    }
+
+    @keyframes peeking-breathe {
+      0% { transform: scaleY(1); }
+      100% { transform: scaleY(1.05) translateY(1px); }
+    }
+
+
+    /* ==========================================================
+       RUNAWAY GAME INTERACTIVE INTERFACE
+       ========================================================== */
+
+    .game-section {
+      text-align: center;
+      border-top: 1px dashed #d5cbb5;
+      padding-top: 28px;
+      font-family: 'Montserrat', sans-serif;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s ease;
+    }
+
+    .game-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .game-section h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      margin-top: 0;
+      margin-bottom: 24px;
+      font-weight: bold;
+      color: #2d2621;
+    }
+
+    .game-buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 32px;
+      min-height: 60px;
+    }
+
+    .btn-yes, .btn-no {
+      padding: 12px 36px;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-yes {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(255, 75, 110, 0.4);
+    }
+
+    .btn-yes:hover {
+      background: var(--primary-dark);
+      transform: scale(1.05) translateY(-2px);
+      box-shadow: 0 10px 25px rgba(255, 75, 110, 0.6);
+    }
+
+    .btn-no {
+      background: #7a6e65;
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+
+    /* ==========================================================
+       SUCCESS CELEBRATION LAYER OVERLAY
+       ========================================================== */
+
+    .success-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle, #fff0f3 0%, #ffd6dc 100%);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .success-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .success-heart {
+      width: 140px;
+      height: 140px;
+      fill: var(--primary);
+      animation: heartbeat 1s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+      filter: drop-shadow(0 0 25px var(--primary-glow));
+      margin-bottom: 40px;
+    }
+
+    .success-overlay h2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 5rem;
+      color: var(--text-main);
+      margin: 0;
+      text-shadow: 0 0 20px rgba(255, 75, 110, 0.25);
+    }
+
+    .success-overlay p {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      max-width: 500px;
+      line-height: 1.8;
+      margin-top: 16px;
+    }
+
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      20% { transform: scale(1.2) rotate(1deg); }
+      40% { transform: scale(1.08) rotate(-1deg); }
+      60% { transform: scale(1.25) rotate(1deg); }
+      80%, 100% { transform: scale(1); }
+    }
+
+    /* Screen Responsiveness queries */
+    @media (max-width: 600px) {
+      .letter-modal {
+        padding: 88px 14px 18px;
+      }
+      .glass-panel {
+        padding: 30px 24px;
+      }
+      .glass-panel h1 {
+        font-size: 3.5rem;
+      }
+      .letter-paper {
+        padding: 44px 20px 32px 20px;
+      }
+      .letter-scroll {
+        max-height: calc(100vh - 196px);
+        padding-right: 4px;
+      }
+      .letter-content {
+        font-size: 1.9rem;
+      }
+      .success-overlay h2 {
+        font-size: 3.5rem;
+      }
+      .game-buttons {
+        gap: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Ambient Audio melody -->
+  <audio id="ambientTrack" loop preload="auto">
+    <source src="https://assets.mixkit.co/music/preview/mixkit-gazing-at-the-looping-stars-1100.mp3" type="audio/mp3">
+  </audio>
+
+  <!-- Ambient background Canvas particles -->
+  <canvas id="ambientCanvas"></canvas>
+
+  <!-- Floating Audio widget -->
+  <div class="music-widget" id="musicWidget">
+    <div class="music-vinyl" id="vinylIcon"></div>
+    <span class="music-info">Ambient</span>
+    <div class="music-bars" id="musicBars">
+      <div class="music-bar" style="height: 4px;"></div>
+      <div class="music-bar" style="height: 6px;"></div>
+      <div class="music-bar" style="height: 8px;"></div>
+      <div class="music-bar" style="height: 5px;"></div>
+    </div>
+  </div>
+
+  <!-- Stage: centered cat and envelope -->
+  <main class="stage" id="mainStage">
+    <div class="glass-panel">
+      <h1>Hazel</h1>
+      <p>My Heart, My Story, My Everything</p>
+
+      <!-- The Cat and Envelope Assembly -->
+      <div class="envelope-wrapper">
+        <!-- Cat Body & Tail (z-index 1 & 2: behind envelope) -->
+        <div class="cat-tail"></div>
+        <div class="cat-body"></div>
+
+        <!-- The 3D Envelope (z-index 3) -->
+        <div class="envelope-container" id="envelope">
+          <div class="envelope-flap"></div>
+          <div class="envelope-body"></div>
+          <div class="envelope-wax-seal">
+            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          </div>
+          <div class="envelope-letter-card">Hazel</div>
+        </div>
+
+        <!-- Cat Head (z-index 4: overlapping envelope top) -->
+        <div class="cat-head">
+          <div class="ear left"></div>
+          <div class="ear right"></div>
+          <div class="eye left"><div class="pupil"></div></div>
+          <div class="eye right"><div class="pupil"></div></div>
+          <div class="nose"></div>
+          <div class="mouth"></div>
+          <div class="blush left"></div>
+          <div class="blush right"></div>
+        </div>
+
+        <!-- Cat Paws (z-index 6: overlapping envelope bottom) -->
+        <div class="cat-paw left"></div>
+        <div class="cat-paw right"></div>
+      </div>
+
+      <!-- Pulse trigger button -->
+      <button class="open-btn" id="openBtn">Open Envelope</button>
+    </div>
+  </main>
+
+  <!-- The Pop-up Letter Modal -->
+  <div class="letter-modal" id="letterModal">
+    <div class="letter-paper">
+      
+      <!-- Adorable Peeking/Holding Cartoon Cat on Letter Paper border -->
+      <div class="peeking-cat">
+        <div class="peeking-ear left"></div>
+        <div class="peeking-ear right"></div>
+        <div class="peeking-head">
+          <div class="peeking-eye left"><div class="pupil"></div></div>
+          <div class="peeking-eye right"><div class="pupil"></div></div>
+          <div class="peeking-nose"></div>
+          <div class="peeking-mouth"></div>
+          <div class="peeking-blush left"></div>
+          <div class="peeking-blush right"></div>
+        </div>
+        <div class="peeking-paw left"></div>
+        <div class="peeking-paw right"></div>
+      </div>
+
+      <!-- Close button -->
+      <button class="letter-close-btn" id="closeLetterBtn" aria-label="Close Letter">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+
+      <div class="letter-scroll" id="letterScroll">
+        <!-- Handwritten Letter Cursive content -->
+        <article class="letter-content" id="letterText"></article>
+
+        <!-- Interactive game selection -->
+        <div class="game-section" id="gameSection">
+          <h3>Will you make me the happiest person and be mine, Hazel?</h3>
+          <div class="game-buttons" id="gameBtnContainer">
+          <button class="btn-yes" id="yesBtn">Yes, I Will! ❤️</button>
+            <button class="btn-no" id="noBtn">No</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Big celebration overlay screen -->
+  <div class="success-overlay" id="successOverlay">
+    <svg class="success-heart" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    <h2>Forever Yours</h2>
+    <p>My heart is fully yours, Hazel. Let us build a beautiful story together, filled with infinite love and laughter. Thank you for being mine! ❤️</p>
+  </div>
+
+  <!-- App logic javascript -->
+  <script>
+    // Configurable letter message
+    const letterTextContent = `Dearest Hazel,
+
+From the moment you entered my world, everything became brighter, warmer, and endlessly beautiful. You brought a gentle light that chased away the dark shadows, filling my soul with immense joy.
+
+I love the comforting sound of your laughter, the kindness you show, and the amazing magic of your presence. No words can ever truly match how deeply I adore you, but please accept this note as a promise of my eternal devotion and absolute love.
+
+You are my dream, my sanctuary, and my absolute favorite chapter...`;
+
+    // DOM References
+    const ambientCanvas = document.getElementById('ambientCanvas');
+    const ctx = ambientCanvas.getContext('2d');
+    const ambientTrack = document.getElementById('ambientTrack');
+    const musicWidget = document.getElementById('musicWidget');
+    const vinylIcon = document.getElementById('vinylIcon');
+    const musicBars = document.getElementById('musicBars');
+    const openBtn = document.getElementById('openBtn');
+    const envelope = document.getElementById('envelope');
+    const letterModal = document.getElementById('letterModal');
+    const closeLetterBtn = document.getElementById('closeLetterBtn');
+    const letterText = document.getElementById('letterText');
+    const letterScroll = document.getElementById('letterScroll');
+    const gameSection = document.getElementById('gameSection');
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const successOverlay = document.getElementById('successOverlay');
+
+    let audioInitialized = false;
+    let particles = [];
+    let sparkles = [];
+    let visualizerBars = Array.from(musicBars.children);
+
+    // Initialization
+    window.addEventListener('DOMContentLoaded', () => {
+      setupAmbientCanvas();
+      setupAudioToggle();
+    });
+
+    // 1. Audio toggler & settings
+    function setupAudioToggle() {
+      ambientTrack.volume = 0.5;
+
+      const toggleMusic = () => {
+        if (ambientTrack.paused) {
+          ambientTrack.play().then(() => {
+            vinylIcon.classList.add('playing');
+            audioInitialized = true;
+          }).catch(err => console.log("Blocked:", err));
+        } else {
+          ambientTrack.pause();
+          vinylIcon.classList.remove('playing');
+        }
+      };
+
+      musicWidget.addEventListener('click', toggleMusic);
+    }
+
+    // Audio Visualizer pulse mock
+    function updateVisualizer(time) {
+      if (!ambientTrack.paused) {
+        visualizerBars.forEach((bar, index) => {
+          const pulse = Math.sin(time / 150 + index * 1.5) * 4 + 6;
+          bar.style.height = `${Math.max(2, pulse)}px`;
+        });
+      } else {
+        visualizerBars.forEach(bar => bar.style.height = '2px');
+      }
+    }
+
+    // 2. Canvas Hearts particle engine
+    function setupAmbientCanvas() {
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+      window.addEventListener('mousemove', triggerSparkleTrail);
+      window.addEventListener('touchmove', (e) => triggerSparkleTrail(e.touches[0]));
+
+      for (let i = 0; i < 20; i++) {
+        particles.push(createHeartParticle(true));
+      }
+
+      requestAnimationFrame(renderCanvasLoop);
+    }
+
+    function resizeCanvas() {
+      ambientCanvas.width = window.innerWidth;
+      ambientCanvas.height = window.innerHeight;
+    }
+
+    function createHeartParticle(randomY = false) {
+      return {
+        x: Math.random() * ambientCanvas.width,
+        y: randomY ? Math.random() * ambientCanvas.height : ambientCanvas.height + 30,
+        size: Math.random() * 12 + 8,
+        speedY: -(Math.random() * 0.7 + 0.3),
+        speedX: Math.sin(Math.random() * Math.PI) * 0.25,
+        alpha: Math.random() * 0.35 + 0.15,
+        color: `hsl(${340 + Math.random() * 20}, 100%, ${65 + Math.random() * 15}%)`,
+        rotation: Math.random() * 0.2 - 0.1,
+        rotationSpeed: Math.random() * 0.02 - 0.01
+      };
+    }
+
+    function triggerSparkleTrail(e) {
+      if (!e) return;
+      if (Math.random() < 0.25) {
+        sparkles.push({
+          x: e.clientX,
+          y: e.clientY,
+          size: Math.random() * 3 + 1,
+          speedY: Math.random() * 0.5 - 0.25,
+          speedX: Math.random() * 0.5 - 0.25,
+          alpha: 1,
+          decay: Math.random() * 0.02 + 0.01,
+          color: Math.random() < 0.5 ? '#ff4b6e' : '#ffd700'
+        });
+      }
+    }
+
+    function drawHeart(ctx, x, y, size, color, alpha, rotation = 0) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rotation);
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      
+      ctx.moveTo(0, size / 4);
+      ctx.quadraticCurveTo(0, 0, size / 2, 0);
+      ctx.quadraticCurveTo(size, 0, size, size / 3);
+      ctx.quadraticCurveTo(size, size * 2 / 3, size / 2, size);
+      ctx.quadraticCurveTo(0, size * 2 / 3, 0, size / 3);
+      ctx.quadraticCurveTo(0, 0, 0, size / 4);
+      
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function renderCanvasLoop(time) {
+      ctx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
+
+      particles.forEach((p, idx) => {
+        p.y += p.speedY;
+        p.x += p.speedX;
+        p.rotation += p.rotationSpeed;
+
+        drawHeart(ctx, p.x, p.y, p.size, p.color, p.alpha, p.rotation);
+
+        if (p.y + p.size < 0) {
+          particles[idx] = createHeartParticle(false);
+        }
+      });
+
+      sparkles.forEach((s, idx) => {
+        s.y += s.speedY;
+        s.x += s.speedX;
+        s.alpha -= s.decay;
+
+        ctx.save();
+        ctx.globalAlpha = s.alpha;
+        ctx.fillStyle = s.color;
+        ctx.shadowColor = s.color;
+        ctx.shadowBlur = 4;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        if (s.alpha <= 0) {
+          sparkles.splice(idx, 1);
+        }
+      });
+
+      updateVisualizer(time);
+      requestAnimationFrame(renderCanvasLoop);
+    }
+
+    // 3. Opening Flow Sequence trigger
+    const openEnvelope = () => {
+      // Trigger background audio
+      if (!audioInitialized) {
+        ambientTrack.play().then(() => {
+          vinylIcon.classList.add('playing');
+          audioInitialized = true;
+        }).catch(err => console.log("Blocked:", err));
+      }
+
+      envelope.classList.add('open');
+      
+      // Delay transition to modal to showcase card sliding up
+      setTimeout(() => {
+        letterModal.classList.add('active');
+        typeLetter();
+      }, 1000);
+    };
+
+    openBtn.addEventListener('click', openEnvelope);
+    envelope.addEventListener('click', openEnvelope);
+
+    closeLetterBtn.addEventListener('click', () => {
+      letterModal.classList.remove('active');
+      envelope.classList.remove('open');
+      letterText.innerHTML = '';
+      letterScroll.scrollTop = 0;
+      gameSection.classList.remove('visible');
+    });
+
+    // 4. Typewriter note printing effect
+    let typingInProgress = false;
+    function typeLetter() {
+      if (typingInProgress) return;
+      typingInProgress = true;
+      letterText.innerHTML = '';
+      letterScroll.scrollTop = 0;
+      gameSection.classList.remove('visible');
+
+      let i = 0;
+      const speed = 35;
+      
+      function type() {
+        if (i < letterTextContent.length) {
+          const char = letterTextContent.charAt(i);
+          if (char === '\n') {
+            letterText.innerHTML += '<br>';
+          } else {
+            letterText.innerHTML += char;
+          }
+          i++;
+          // Auto scroll the letter text without letting the paper overflow the screen.
+          letterScroll.scrollTop = letterScroll.scrollHeight;
+          setTimeout(type, speed);
+        } else {
+          typingInProgress = false;
+          gameSection.classList.add('visible');
+        }
+      }
+      setTimeout(type, 600);
+    }
+
+    // 5. Playful runaway button game logic
+    const moveNoButton = (e) => {
+      noBtn.style.position = 'absolute';
+      
+      const paper = letterModal.querySelector('.letter-paper');
+      const paperRect = paper.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+
+      // Bounds mapping inside paper padding limits
+      const minX = 20;
+      const maxX = paperRect.width - btnRect.width - 20;
+      const minY = paperRect.height - btnRect.height - 80;
+      const maxY = paperRect.height - btnRect.height - 20;
+
+      const newX = Math.random() * (maxX - minX) + minX;
+      const newY = Math.random() * (maxY - minY) + minY;
+
+      noBtn.style.left = `${newX}px`;
+      noBtn.style.top = `${newY}px`;
+    };
+
+    noBtn.addEventListener('mouseenter', moveNoButton);
+    noBtn.addEventListener('mouseover', moveNoButton);
+    noBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      moveNoButton(e);
+    });
+
+    // 6. Yes Button Confetti celebration trigger
+    yesBtn.addEventListener('click', () => {
+      successOverlay.classList.add('active');
+      triggerMassiveHeartConfetti();
+    });
+
+    function triggerMassiveHeartConfetti() {
+      particles = [];
+      for (let i = 0; i < 180; i++) {
+        particles.push({
+          x: Math.random() * ambientCanvas.width,
+          y: ambientCanvas.height + Math.random() * 500,
+          size: Math.random() * 24 + 10,
+          speedY: -(Math.random() * 3.5 + 1.5),
+          speedX: Math.sin(Math.random() * Math.PI) * 0.8,
+          alpha: Math.random() * 0.8 + 0.2,
+          color: `hsl(${340 + Math.random() * 20}, 100%, ${55 + Math.random() * 20}%)`,
+          rotation: Math.random() * 0.4 - 0.2,
+          rotationSpeed: Math.random() * 0.05 - 0.02
+        });
+      }
+    }
+  </script>
+</body>
+
+</html>
